@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './App.css';
+import emailjs from '@emailjs/browser';
+// import sendEmail from './email';
 
 function App() {
+
+    const form = useRef();
+    
+    const sendEmail = (e) => {
+      e.preventDefault(); // prevents the page from reloading when you hit “Send”
+    
+      emailjs.sendForm('service_n2bc3an', 'template_czque28', form.current, '9SE640DWSqvFqSy9A')
+        .then((result) => {
+            console.log("Mail Sent")
+        }, (error) => {
+            console.log(error)
+        });
+    };
+
+
   return (
     <div className="App">
-      <form>
+      <form ref={form} onSubmit={sendEmail}>
         <div className="form-group">
           <label htmlFor="name">Name</label>
           <input type="text" id="name" name="name" required />
@@ -46,7 +63,7 @@ function App() {
             </div>
           </div>
         </div>
-        <button type="submit">Generate Invoice</button>
+        <button type="submit">Send Email</button>
       </form>
     </div>
   );
